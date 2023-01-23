@@ -1,0 +1,73 @@
+Team_Members,Set_Number,Index,Value,Trial
+EB+JK:) ,106,Species richness,5,1
+EB+JK:) ,106,Simpson's index,0.523,1
+EB+JK:) ,106,Shannon index,0.948,1
+EB+JK:) ,106,Evenness,0.589,1
+CE and WR,104,Species richness,7,1
+CE and WR,104,Simpson's index,0.41,1
+CE and WR,104,Shannon index,1.2783,1
+CE and WR,104,Evenness,0.6571,1
+"JS, TM, TS",109,Species richness,7,1
+"JS, TM, TS",109,Simpson's index,0.4596,1
+"JS, TM, TS",109,Shannon index,1.182,1
+"JS, TM, TS",109,Evenness,0.608,1
+AH & DR :/,108,Species richness,5,1
+AH & DR :/,108,Simpson's index,0.6366,1
+AH & DR :/,108,Shannon index,0.7668,1
+AH & DR :/,108,Evenness,0.095,1
+JE + PS,102,Species richness,4,1
+JE + PS,102,Simpson's index,0.64,1
+JE + PS,102,Shannon index,0.711,1
+JE + PS,102,Evenness,0.51,1
+PD + ST,101,Species richness,8,1
+PD + ST,101,Simpson's index,0.283,1
+PD + ST,101,Shannon index,1.556,1
+PD + ST,101,Evenness,0.75,1
+EB+JK:),206,Species richness,10,2
+EB+JK:),206,Simpson's index,0.093,2
+EB+JK:),206,Shannon index,2.166,2
+EB+JK:),206,Evenness,0.942,2
+CE and WR,204,Species richness,9,2
+CE and WR,204,Simpson's index,0.1066,2
+CE and WR,204,Shannon index,2.0607,2
+CE and WR,204,Evenness,0.9528,2
+"JS, TM, TS",209,Species richness,10,2
+"JS, TM, TS",209,Simpson's index,0.092,2
+"JS, TM, TS",209,Shannon index,2.17,2
+"JS, TM, TS",209,Evenness,0.943,2
+AH & DR :|,208,Species richness,10,2
+AH & DR :|,208,Simpson's index,0.08333,2
+AH & DR :|,208,Shannon index,2.192473,2
+AH & DR :|,208,Evenness,0.957,2
+JE + PS,202,Species richness,10,2
+JE + PS,202,Simpson's index,0.08,2
+JE + PS,202,Shannon index,2.202,2
+JE + PS,202,Evenness,0.96,2
+PD +ST,201,Species richness,9,2
+PD +ST,201,Simpson's index,0.106,2
+PD +ST,201,Shannon index,2.044,2
+PD +ST,201,Evenness,0.931,2
+EB+JK:),306,Species richness,6,3
+EB+JK:),306,Simpson's index,0.163,3
+EB+JK:),306,Shannon index,1.702,3
+EB+JK:),306,Evenness,0.949,3
+CE and WR,304,Species richness,9,3
+CE and WR,304,Simpson's index,1.332,3
+CE and WR,304,Shannon index,1.9917,3
+CE and WR,304,Evenness,0.9209,3
+"JS, TM, TS",309,Species richness,7,3
+"JS, TM, TS",309,Simpson's index,0.149,3
+"JS, TM, TS",309,Shannon index,1.81,3
+"JS, TM, TS",309,Evenness,0.93,3
+AH & DR :\,308,Species richness,7,3
+AH & DR :\,308,Simpson's index,0.18666,3
+AH & DR :\,308,Shannon index,1.6697,3
+AH & DR :\,308,Evenness,0.368,3
+JE + PS,302,Species richness,8,3
+JE + PS,302,Simpson's index,0.12,3
+JE + PS,302,Shannon index,1.95,3
+JE + PS,302,Evenness,0.94,3
+PD + ST,301,Species richness,6,3
+PD + ST,301,Simpson's index,0.136,3
+PD + ST,301,Shannon index,1.777,3
+PD + ST,301,Evenness,0.992,3
