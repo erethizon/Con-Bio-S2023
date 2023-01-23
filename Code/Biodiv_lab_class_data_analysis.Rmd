@@ -54,7 +54,7 @@ ggplot(filter(MyJoin, Index == "Species richness"), aes(Trial, Value))+
 ```
 Save the plot
 ```{r}
-ggsave(here("Data", "Outputs", "species_richness.png"))
+ggsave(here("Data", "Outputs", "species_richness.png"),width = 6, height = 4)
 ```
 
 Now plot everything else
@@ -72,7 +72,7 @@ ggplot(filter(MyJoin, Index != "Species richness"), aes(Index, Value))+
 ```
 Let's save that plot!
 ```{r}
-ggsave(here("Data","Outputs","comparing_indices.png"), device = "png")
+ggsave(here("Data","Outputs","comparing_indices.png"), device = "png", width = 6, height = 4)
 ```
 
 
@@ -92,7 +92,8 @@ ggplot(filter(MyJoin, Trial==1, Index != "Species richness"), aes(Index, Value))
 
 And save
 ```{r}
-ggsave(here("Data", "Outputs", "Trial1_one_dominant_species.png"))
+ggsave(here("Data", "Outputs", "Trial1_one_dominant_species.png"), width = 6, height = 4) 
+
 ```
 
 Trial 2:
@@ -112,7 +113,7 @@ ggplot(filter(MyJoin, Trial==2, Index != "Species richness"), aes(Index, Value))
 ```
 And save
 ```{r}
-ggsave(here("Data", "Outputs", "trial2_even_species.png"))
+ggsave(here("Data", "Outputs", "trial2_even_species.png"), width = 6, height = 4)
 ```
 
 Trial 3:
