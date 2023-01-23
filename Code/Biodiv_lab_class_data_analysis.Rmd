@@ -52,6 +52,10 @@ ggplot(filter(MyJoin, Index == "Species richness"), aes(Trial, Value))+
   
  
 ```
+Save the plot
+```{r}
+ggsave(here("Data", "Outputs", "species_richness.png"))
+```
 
 Now plot everything else
 ```{r}
@@ -85,6 +89,12 @@ ggplot(filter(MyJoin, Trial==1, Index != "Species richness"), aes(Index, Value))
   facet_wrap(~Trial)
  
 ```
+
+And save
+```{r}
+ggsave(here("Data", "Outputs", "Trial1_one_dominant_species.png"))
+```
+
 Trial 2:
 
 ```{r}
@@ -100,6 +110,11 @@ ggplot(filter(MyJoin, Trial==2, Index != "Species richness"), aes(Index, Value))
  
 
 ```
+And save
+```{r}
+ggsave(here("Data", "Outputs", "trial2_even_species.png"))
+```
+
 Trial 3:
 
 ```{r}
@@ -115,3 +130,8 @@ ggplot(filter(MyJoin, Trial==3, Index != "Species richness"), aes(Index, Value))
  
 
 ```
+And save
+```{r}
+ggsave(here("Data", "Outputs", "Trial3_random_communities.png"))
+```
+

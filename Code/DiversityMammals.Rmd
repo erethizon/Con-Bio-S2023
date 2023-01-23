@@ -48,47 +48,47 @@ DivIndices$InvSimpson<-diversity(Mammals, index = "invsimpson")
 
 #shanon index
 DivIndices$Shannon<-diversity(Mammals, index = "shannon")
+View(DivIndices)
 
-```
-Now let's calculate some summary statistics
-```{r}
-MammalSum<-DivIndices %>% summarise(
-	NSp = length(SR),
-  MaxSp= max(SR),
-	MinSp = min(SR),
-	AvgSp = mean(SR, na.rm = T),
-	sdSp = sd(SR, na.rm = T),
-	seSp = sdSp/sqrt(NSp),
-	NSimpson = length(Simpson),
-	MaxSimpson = max(Simpson),
-	MinSimpson = min(Simpson),
-	AvgSimpson = mean(Simpson, na.rm = T),
-	sdSimpson = sd(Simpson, na.rm = T),
-	seSimpson = sdSimpson/sqrt(NSimpson),
-	NShannon = length(Shannon),
-	MaxShannon = max(Shannon),
-	MinShannon = min(Shannon),
-	AvgShannon = mean(Shannon, na.rm = T),
-	sdShannon = sd(Shannon, na.rm = T),
-	seShannon = sdShannon/sqrt(NShannon)
-)
-
-MamSum2<-summary(DivIndices)
-MamSum2
 ```
 Now let's go from wide to long format for DivIndices
 ```{r}
 DivLong <- DivIndices %>% pivot_longer(cols = SR:Shannon, values_to = "Value")
 ```
 
-
+Now let's calculate some summary statistics
 ```{r}
-ggplot(DivLong, aes(Cam_SD, Value, group = name, color = name))+
-  geom_point(color = "gray", alpha = 0.5)+
-  facet_wrap(~name)+
-  coord_flip()
+MammalSum<-DivLong %>% group_by(name) %>% summarise(
+	IndexN = length(Value),
+	IndexAvg = mean(Value, na.rm = T),
+	IndexSD = sd(Value, na.rm = T),
+	IndexSEM = IndexSD/sqrt(IndexN), 
+	IndexMax = max(Value), 
+	IndexMin = min(Value),
+	Quant10 = quantile(Value, probs = c(0.10)),
+	Quant90 = quantile(Value, probs = c(0.90))
+)
+
 ```
 
+Now join data
+```{r}
+AllData<-full_join(DivLong, MammalSum, by = c("name"))
+```
+
+
+Now let's make a plot
+```{r}
+ggplot(AllData, aes(name, Value))+
+  geom_jitter(alpha = 0.5, color = "dark blue", width = 0.1, height = 0.05)+
+  geom_point(aes(name, IndexAvg), shape = 21, size = 4, fill = "white",color = "dark blue")+
+  geom_errorbar(aes(name,ymin = IndexAvg-IndexSEM, ymax = IndexAvg+IndexSEM),color = "red", width = 0.1)
+  
+```
+Save the plot
+```{r}
+ggsave(here("Data", "Outputs", "MammalDiversity.png"))
+```
 
 Now calculate the Jaccard index for all pairs of plots
 ```{r}
@@ -96,6 +96,7 @@ Now calculate the Jaccard index for all pairs of plots
 Jaccard<-betadiver(Mammals, "j") #j indicates to use the a/a+b+c formula
 #result is of class 'distance' - convert to a matrix
 Jaccard<-as.matrix(Jaccard)
+Jaccard<-round(Jaccard, digits = 3)
 ```
 Now use `betapart`package to get shared species between sites. The function requires a set of presence/absence rather than abundance data so we have to convert our DF dataset to that.
 ```{r}
@@ -127,13 +128,15 @@ So all we really need to do is put the Jaccard data below the diagonal.
 ```{r}
 #using base r
 Shared[lower.tri(Shared)]<-Jaccard[lower.tri(Jaccard, diag = FALSE)]
+Shared<-round(Shared, digits = 3)
+View(Shared)
 #It worked!
 ```
 Now write the matrix to a new location
 ```{r}
 write.csv(Shared, here("Data", "Outputs","MammalDivComparison.csv"))
 ```
-And write the diversity table out as well.
+And write the summary of the diversity table out as well.
 ```{r}
-write.csv(DivIndices, here("Data", "Outputs", "MammalDiversity.csv"))
+write.csv(AllData, here("Data", "Outputs", "MammalDiversity.csv"))
 ```
