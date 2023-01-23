@@ -41,62 +41,71 @@ Start by joining data
 ```{r}
 MyJoin<-full_join(DF, DFsummary, by = c("Trial", "Index"))
 ```
-Now plot full thing
+Look just at Species richness
 ```{r}
-ggplot(MyJoin, aes(Index, Value))+
+ggplot(filter(MyJoin, Index == "Species richness"), aes(Trial, Value))+
+  geom_jitter(alpha = 0.5, color = "dark green", width = 0.05)+
+  geom_point(aes(Trial, IndexAvg), size = 4, color = "dark green")+
+  geom_errorbar(aes(Trial,ymin = IndexAvg-IndexSEM, ymax = IndexAvg+IndexSEM), color = "dark green", width = 0.25)+
+  geom_segment(aes(x = 0.5, xend = 2.5, y = 10, yend = 10), color = "red")+
+  labs(title = "Species Richness")
+  
+ 
+```
+
+Now plot everything else
+```{r}
+ggplot(filter(MyJoin, Index != "Species richness"), aes(Index, Value))+
   geom_jitter(alpha = 0.5, color = "dark green", width = 0.05)+
   geom_point(aes(Index, IndexAvg), size = 4, color = "dark green")+
   geom_errorbar(aes(Index,ymin = IndexAvg-IndexSEM, ymax = IndexAvg+IndexSEM), color = "dark green", width = 0.25)+
-  #geom_segment(aes(x = 0.5, xend = 2.5, y = 10, yend = 10), color = "red")+
-  labs(title = "Species Richness")+
+  # geom_segment(aes(x = 0.5, xend = 1.5, y = 0.479, yend = 0.479), color = "red")+
+  # geom_segment(aes(x = 1.5, xend = 2.5, y = 1.10, yend = 1.10), color = "red")+
+  # geom_segment(aes(x = 2.5, xend = 3.5, y = 0.568, yend = 0.568), color = "red")+     
+  labs(title = "Comparing indices")+
   facet_wrap(~Trial)
  
 ```
-
-
-
-
-Species Richness
+Now look at trial 1:
 ```{r}
-ggplot()+
-  geom_jitter(aes(Trial, Value), alpha = 0.5, color = "dark green", width = 0.05, data = (filter(DF, Index == "Species richness")))+
-  geom_point(aes(Trial, IndexAvg), size = 4, color = "dark green", data = (filter(DFsummary, Index == "Species richness")))+
-  geom_errorbar(aes(Trial,ymin = IndexAvg-IndexSEM, ymax = IndexAvg+IndexSEM), color = "dark green", width = 0.25,data = (filter(DFsummary, Index == "Species richness")))+
-  geom_segment(aes(x = 0.5, xend = 2.5, y = 10, yend = 10), color = "red")+
-  labs(title = "Species Richness")
+ggplot(filter(MyJoin, Trial==1, Index != "Species richness"), aes(Index, Value))+
+  geom_jitter(alpha = 0.5, color = "dark green", width = 0.05)+
+  geom_point(aes(Index, IndexAvg), size = 4, color = "dark green")+
+  geom_errorbar(aes(Index,ymin = IndexAvg-IndexSEM, ymax = IndexAvg+IndexSEM), color = "dark green", width = 0.25)+
+  geom_segment(aes(x = 0.5, xend = 1.5, y = 0.479, yend = 0.479), color = "red")+
+  geom_segment(aes(x = 1.5, xend = 2.5, y = 1.10, yend = 1.10), color = "red")+
+  geom_segment(aes(x = 2.5, xend = 3.5, y = 0.568, yend = 0.568), color = "red")+
+  labs(title = "Comparing indices: Trial 1 - one dominant species")+
+  facet_wrap(~Trial)
  
 ```
-Now look at Simpson's index
+Trial 2:
 
 ```{r}
-ggplot()+
-  geom_jitter(aes(Trial, Value), alpha = 0.5, color = "dark green", width = 0.05, data = (filter(DF, Index == "Simpson's index")))+
-  geom_point(aes(Trial, IndexAvg), size = 4, color = "dark green", data = (filter(DFsummary, Index == "Simpson's index")))+
-  geom_errorbar(aes(Trial,ymin = IndexAvg-IndexSEM, ymax = IndexAvg+IndexSEM), color = "dark green", width = 0.25,data = (filter(DFsummary, Index == "Simpson's index")))+
-  geom_segment(aes(x = 0.5, xend = 1.5, y = 0.568, yend = 0.568), color = "red")+
-  geom_segment(aes(x = 1.5, xend = 2.5, y = 0.095, yend = 0.095), color = "red")+
-  labs(title = "Simpson's index")
-```
-Now look at the Shannon index
-```{r}
-ggplot()+
-  geom_jitter(aes(Trial, Value), alpha = 0.5, color = "dark green", width = 0.05, data = (filter(DF, Index == "Shannon index")))+
-  geom_point(aes(Trial, IndexAvg), size = 4, color = "dark green", data = (filter(DFsummary, Index == "Shannon index")))+
-  geom_errorbar(aes(Trial,ymin = IndexAvg-IndexSEM, ymax = IndexAvg+IndexSEM), color = "dark green", width = 0.25,data = (filter(DFsummary, Index == "Shannon index")))+
-  geom_segment(aes(x = 0.5, xend = 1.5, y = 1.10, yend = 1.10), color = "red")+
+ggplot(filter(MyJoin, Trial==2, Index != "Species richness"), aes(Index, Value))+
+  geom_jitter(alpha = 0.5, color = "dark green", width = 0.05)+
+  geom_point(aes(Index, IndexAvg), size = 4, color = "dark green")+
+  geom_errorbar(aes(Index,ymin = IndexAvg-IndexSEM, ymax = IndexAvg+IndexSEM), color = "dark green", width = 0.25)+
+  geom_segment(aes(x = 0.5, xend = 1.5, y = 1.0, yend = 1.0), color = "red")+
   geom_segment(aes(x = 1.5, xend = 2.5, y = 2.30, yend = 2.30), color = "red")+
-  labs(title = "Shannon index")
+  geom_segment(aes(x = 2.5, xend = 3.5, y = 0.095, yend = 0.095), color = "red")+
+  labs(title = "Comparing indices:Trial 2 - even distribution")+
+  facet_wrap(~Trial)
+ 
+
 ```
-And evenness
+Trial 3:
 
 ```{r}
-ggplot()+
-  geom_jitter(aes(Trial, Value), alpha = 0.5, color = "dark green", width = 0.05, data = (filter(DF, Index == "Evenness")))+
-  geom_point(aes(Trial, IndexAvg), size = 4, color = "dark green", data = (filter(DFsummary, Index == "Evenness")))+
-  geom_errorbar(aes(Trial,ymin = IndexAvg-IndexSEM, ymax = IndexAvg+IndexSEM), color = "dark green", width = 0.25,data = (filter(DFsummary, Index == "Evenness")))+
-  geom_segment(aes(x = 0.5, xend = 1.5, y = 0.479, yend = 0.479), color = "red")+
-  geom_segment(aes(x = 1.5, xend = 2.5, y = 1.0, yend = 1.0), color = "red")+
-  labs(title = "Evenness index")
+ggplot(filter(MyJoin, Trial==3, Index != "Species richness"), aes(Index, Value))+
+  geom_jitter(alpha = 0.5, color = "dark green", width = 0.05)+
+  geom_point(aes(Index, IndexAvg), size = 4, color = "dark green")+
+  geom_errorbar(aes(Index,ymin = IndexAvg-IndexSEM, ymax = IndexAvg+IndexSEM), color = "dark green", width = 0.25)+
+  # geom_segment(aes(x = 0.5, xend = 1.5, y = 1.0, yend = 1.0), color = "red")+
+  # geom_segment(aes(x = 1.5, xend = 2.5, y = 2.30, yend = 2.30), color = "red")+
+  # geom_segment(aes(x = 2.5, xend = 3.5, y = 0.095, yend = 0.095), color = "red")+
+  labs(title = "Comparing indices:Trial 3 - random distribution")+
+  facet_wrap(~Trial)
+ 
+
 ```
-
-

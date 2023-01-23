@@ -15,7 +15,7 @@ library(rstatix) #turns on package with some matrix maniuplation functions
 
 Now let's pull in some data
 ```{r}
-DF<-read.csv(here("Data", "Inputs","MammalMatrix.csv"))
+DF<-read.csv(here("Data", "MammalMatrix.csv"))
 ```
 DF has the number of mammals of each species captured from 71 camera traps located around northern New York as part of my research.
 
@@ -80,12 +80,6 @@ Now let's go from wide to long format for DivIndices
 ```{r}
 DivLong <- DivIndices %>% pivot_longer(cols = SR:Shannon, values_to = "Value")
 ```
-Now make a plot that shows all the points per index and that makes the bottom 10% of values light red and the top 10% light green.
-
-First, add a column to 
-```{r}
-
-```
 
 
 ```{r}
@@ -137,9 +131,9 @@ Shared[lower.tri(Shared)]<-Jaccard[lower.tri(Jaccard, diag = FALSE)]
 ```
 Now write the matrix to a new location
 ```{r}
-write.csv(Shared, here("Biodiv Lab", "Data", "Outputs","MammalDivComparison.csv"))
+write.csv(Shared, here("Data", "Outputs","MammalDivComparison.csv"))
 ```
 And write the diversity table out as well.
 ```{r}
-write.csv(DivIndices, here("Biodiv Lab", "Data", "Outputs", "MammalDiversity.csv"))
+write.csv(DivIndices, here("Data", "Outputs", "MammalDiversity.csv"))
 ```
