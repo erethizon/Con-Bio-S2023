@@ -9,9 +9,9 @@ With this code we will take a look at the biodiversity indices we calculated for
 We'll start by setting up our workspace and loading the raw data.
 
 ```{r}
-rm(list = ls())
-library(tidyverse)
-library(here)
+rm(list = ls()) #clear's R's memory for a fresh start
+library(tidyverse) #turns on a package called "Tidyverse"
+library(here)#turns on a package for finding things
 DF<-read.csv(here("Data","bead_simulation_2023.csv"))
 ```
 And pull in the actual values
@@ -66,6 +66,12 @@ ggplot(filter(MyJoin, Index != "Species richness"), aes(Index, Value))+
   facet_wrap(~Trial)
  
 ```
+Let's save that plot!
+```{r}
+ggsave(here("Data","Outputs","comparing_indices.png"), device = "png")
+```
+
+
 Now look at trial 1:
 ```{r}
 ggplot(filter(MyJoin, Trial==1, Index != "Species richness"), aes(Index, Value))+
