@@ -1,0 +1,140 @@
+---
+title: "Biogeography"
+author: "Erika Barthelmess"
+date: "2/3/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+### Step 1. Set up the R workspace
+
+```{r, echo = FALSE}
+rm(list = ls()) #clears the workspace for a fresh start
+library(dplyr) #turns on dplyr package
+library(ggplot2) #turns on ggplot2 package
+library(here) #helps with file paths
+```
+
+### Step 2. Import and organize Data
+
+#### A.
+Open the master data file
+
+```{r}
+library(readr)
+Data <- read.csv(here("Data", "Biogeography", "Biogeography_Data_All_Years.csv"), stringsAsFactors = T)
+
+str(Data) #presents how the data frame is structured
+```
+#### B. 
+Summarize the data a bit
+
+Begin by controlling variable types a bit
+```{r}
+Data$Replicate<-as.factor(Data$Replicate)
+```
+
+Now summarize
+```{r}
+Reps<-Data %>% group_by(Size, Distance) %>% summarize(
+	Replicates = length(unique(Replicate))
+)
+RepsByYear<-Data %>% group_by(Year, Size, Distance) %>% summarize(
+   Replicates = length(unique(Replicate))
+)
+```
+
+#### C. 
+Now get just the data from this year
+```{r}
+DF <- Data %>% filter(Year == 2023)
+```
+
+Now filter the data to get each island size/dist combination
+
+```{r}
+S2M<-filter(DF, Size == "Small" & Distance == 2)
+L2M<-filter(DF, Size == "Large" & Distance == 2)
+S6M1<-filter(DF, Size == "Small" & Distance == 6, Replicate == "1")
+S6M2<-filter(DF, Size == "Small" & Distance == 6, Replicate == "2")
+L6M<- filter(DF, Size == "Large" & Distance == 6)
+
+```
+###Step 3. Perform the analysis
+
+We run a regression of Colonization vs. Species Richness to get the regression line.  We will use data from the small, 6m island, replicate 2.  **You will need to do this again for all of the size/distance combinations, replicate 1.**
+
+First let's look at a basic regression equation and how to structure it in R:
+```{r}
+IS6M2<-lm(I~R, data = S6M2) #creates the regression model for the colonization (I) vs. R for the Small (S), 6m (6M) island, replicate 2.
+
+summary(IS6M2) #shows results
+```
+
+How would you run the regression of extinction vs. species richness?
+```{r}
+#what code goes here?
+```
+
+
+We can put both regressions together in the same block of code:
+```{r}
+IS6M2<-lm(I~R, data = S6M2) #creates the regression model for the colonization (I) vs. R for the Small (S), 6m (6M) island, replicate 2.
+
+summary(IS6M2)
+
+ES6M2 <- lm(E ~ R, data = S6M2)
+summary(ES6M2)
+
+
+```
+Now let's plot our results using the ggplot2 package.  We want to plot I vs. R and E vs. R on the same graph.
+```{r}
+#Now plot together to visually find equilibrium 
+ggplot(S6M2, aes(R, I))+
+   geom_point(color = "blue")+
+   geom_point(aes(R, E), color = "red")+
+   geom_abline(data=ES6M2, intercept = ES6M2$coefficients[1], 
+               slope = ES6M2$coefficients[2], color = "red")+
+   geom_abline(data=IS6M2, intercept = IS6M2$coefficients[1], 
+               slope = IS6M2$coefficients[2], color = "blue")+
+  labs(x="R (species richness)", y = "I or E", title = "Small Island, 6 m, replicate 2")
+  
+```
+And now we can save our plot for later (like to insert in your homework!)
+```{r, echo = False}
+#now save your result
+ggsave(here("Data", "Outputs","Small 6M replicate 2equilibrium.png"), width = 6, height = 4,device = "png")
+
+```
+
+Now let's plot our results using the ggplot2 package.  We want to plot I vs. R and E vs. R on the same graph.
+```{r}
+#Now plot together to visually find equilibrium 
+ggplot(S6M2, aes(R, I))+
+   geom_point(color = "blue")+
+   geom_point(aes(R, E), color = "red")+
+   geom_abline(data=ES6M2, intercept = ES6M2$coefficients[1], 
+               slope = ES6M2$coefficients[2], color = "red")+
+   geom_abline(data=IS6M2, intercept = IS6M2$coefficients[1], 
+               slope = IS6M2$coefficients[2], color = "blue")+
+	geom_vline(xintercept = 2.96, linetype = "dashed")+
+  labs(x="R (species richness)", y = "I or E", title = "Small Island, 6 m, replicate 2")
+  
+```
+
+And now we can save our plot for later (like to insert in your homework!)
+```{r, echo = False}
+#now save your result
+ggsave(here("Data", "Outputs","Small 6M replicate 2equilibrium_w_line.png"), width = 6, height = 4,device = "png")
+
+```
+
+  
+
+
+
+
+
