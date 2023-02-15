@@ -85,7 +85,7 @@ Fill in the following code chunk to get the I and E equations for the small, 2m 
 
 ```
 
-Now fill in the following code chunk to save your plot. Name the plot "small_2m.png"
+Now fill in the following code chunk to save your plot to the Biogeography folder in the Outputs folder. Name the plot "small_2m.png"
 ```{r}
 
 ```
@@ -97,7 +97,7 @@ Fill in the following code chunk to get the I and E equations for the small, 6m 
 
 ```
 
-Now fill in the following code chunk to save your plot. Name the plot "small_6m_rep1.png"
+Now fill in the following code chunk to save your plot to the Biogeography folder in the Outputs folder. Name the plot "small_6m_rep1.png"
 ```{r}
 
 ```
@@ -109,7 +109,7 @@ Fill in the following code chunk to get the I and E equations for the large, 2m 
 
 ```
 
-Now fill in the following code chunk to save your plot. Name the plot "large_2m.png"
+Now fill in the following code chunk to save your plot to the Biogeography folder in the Outputs folder. Name the plot "large_2m.png"
 ```{r}
 
 ```
@@ -121,9 +121,10 @@ Fill in the following code chunk to get the I and E equations for the large, 6m 
 
 ```
 
-Now fill in the following code chunk to save your plot. Name the plot "large_6m.png"
+Now fill in the following code chunk to save your plot to the Biogeography folder in the Outputs folder. Name the plot "large_6m.png"
 ```{r}
 
 ```
 
 
+Great! Next you need to solve for equilibrium R for each of these experiments.

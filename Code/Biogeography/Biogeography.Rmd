@@ -108,7 +108,7 @@ ggplot(S6M2, aes(R, I))+
 And now we can save our plot for later (like to insert in your homework!)
 ```{r, echo = False}
 #now save your result
-ggsave(here("Data", "Outputs","Small 6M replicate 2equilibrium.png"), width = 6, height = 4,device = "png")
+ggsave(here("Data", "Outputs","Biogeography","Small 6M replicate 2equilibrium.png"), width = 6, height = 4,device = "png")
 
 ```
 
