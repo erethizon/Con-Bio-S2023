@@ -1,0 +1,143 @@
+---
+title: "Willingness to Pay for Bald Eagles"
+output: html_notebook
+---
+
+##Introduction
+"Monetizing" nature, that is, putting a dollar value on the environment, is a complex task.  In some cases, there is a specific market for a natural resource, and we can use a "Conventional Market Approach" to reach a dollar value.  For example, if maple wood sells for $5 per bundle of firewood, and harvesting 10 trees generates 250 bundles, I can calculate the "value" of those ten trees.
+
+However, often there is not a market on which an aspect of nature is traded.  For example, how do I measure the spiritual value of a maple tree to someone? Or put a dollar value on the existence of a species?
+
+When there is no real market, we resort to either an "Implicit Market Approach" or, as in the case below, a "Hypothetical Market Approach".
+
+In the Hypothetical Market Approach, we assign value most commonly by asking people how much they would be willing to pay to e.g. ensure that a species remains on the planet in viable populations.
+
+##Our example
+In class, I asked you to tell me either the dollars/year for 10 years or the lump sum (one time) payment  you would be willing to make to ensure the survival of the bald eagle.  I have collated that data in a spreadsheet called "WillingessToPayForEagles.csv" and we will use it here to calculate the "value," in US dollars, of bald eagles as a species.
+
+###Step 1.  Prepare your R workspace 
+Let's set up a few things to make R play nicely with us:
+```{r, results = "hide"}
+rm(list = ls()) #clears R's workspace
+library(tidyverse) #nice tools for reformatting data structures, plotting, etc.
+library(here)
+```
+###Step 2. Load some data
+You have access to a spreadsheet called "WillingnessToPayForEagles.csv" which has all responses to the question "How much would _You_ be willing to pay (dollars per year for the next 10 years) to ensure the survival of the bald eagle, symbol of freedom?".  You were asked to provide an amount in dollars per year for 10 years and a lump sum (one time payment).
+
+Our data has responses from students in Con Bio in 2018,2019, 2021-2023
+
+```{r}
+#read data (found in csv files within wtp.xlsx); save as WTP
+WTP <- read.csv(here("Data", "WillingnessToPayForEagles.csv"))
+glimpse(WTP) #examine data set
+```
+If R thinks the per_year and lump_sum data are character variables then re-export them, open them in excel and format those columns as numeric before loading into R. Otherwise, R is seeing the "," in e.g. "1,200" and making a character variable.
+
+The data should be in the format of a data frame with 4 columns: Person, per_year, lump_sum,and year.  Year is the class year to which the respondent belongs.
+
+Let's also make Year a factor variable for plotting purposes.
+
+```{r}
+WTP$year <- as.factor(WTP$year)
+```
+
+###Step 3. Summarize the data
+Let's begin by looking at some plots of the data so we can see how people responded.
+
+```{r}
+ggplot(WTP, aes(year, per_year, group = year, color = year))+
+	geom_point()+
+	labs(x = "Year of response", y = "Dollars per year")
+```
+And now as a boxplot:
+```{r}
+FigTitle<-"Willingess to Pay to Keep Bald Eagles from extinction"
+ggplot(WTP, aes(year, per_year, group = year, color = year))+
+	geom_boxplot()+
+	geom_point()+
+	labs(x = "Year of response", y = "Dollars per year")+
+	ggtitle(FigTitle)
+ggsave("WTP_eagles.png", device = "png")
+```
+Now get some summary stats
+```{r}
+Summary<-WTP %>% group_by(year) %>% summarise(
+	N = length(Person),
+	Mean_WTP = mean(per_year, na.rm = T),
+	SD_WTP = sd(per_year, na.rm = T),
+	SEM_WTP = SD_WTP/sqrt(N),
+	MED_WTP = median(per_year, na.rm = T)
+)
+```
+And plot
+```{r}
+ggplot(Summary, aes(year, Mean_WTP, color = year))+
+	geom_point(size = 4)+
+	geom_errorbar(aes(ymin = Mean_WTP - SEM_WTP, ymax = Mean_WTP+SEM_WTP), width = 0.2)+
+	geom_point(aes(year, per_year), WTP)
+ggsave(here("Data", "Outputs","Econ","MeanWTP.png"), device = "png")
+```
+
+
+And now let's do lump sum:
+```{r}
+FigTitle<-"Willingess to Pay to Keep Bald Eagles from extinction"
+ggplot(WTP, aes(year, lump_sum, group = year, color = year))+
+	geom_boxplot()+
+	geom_point()+
+	labs(x = "Year of response", y = "Dollars in lump sum")+
+	ggtitle(FigTitle)
+```
+
+Now lets get the summary, by year, for mean willingness to pay in both per year and lump sum amounts.  Pay attention to NAs!
+```{r}
+SummaryAll<-WTP %>% group_by(year) %>% summarize (
+	N = length(Person),
+	MeanPerYear= mean(per_year, na.rm = T),
+	sdPerYear = sd(per_year, na.rm = T),
+	MeanLumpSum = mean(lump_sum, na.rm = T),
+	sdLumpSum = sd(lump_sum, na.rm = T)
+)
+
+#the na.rm = T statements tell R to go ahead and calculate a mean or SD even if some of the cells in the column are blank (NA)?
+```
+####Optional Step: The resulting dataframe (Summary) is in what R users call "Wide" format, can be harder to plot.  We'll convert it to Long format before plotting it. If you're not sure how, read [this website](http://www.cookbook-r.com/Manipulating_data/Converting_data_between_wide_and_long_format/)
+
+```{r}
+Sum_long<-gather(Summary, value, measurement, MeanPerYear:sdLumpSum)
+```
+That worked!  See the website for details on _why_ it worked.
+
+###Step 4. Visualize the data.
+Now we have everything we need to get an interesting plot of the data.
+Before we continue, lets change year to a factor variable. Let's also turn on a package that helps us get fancier-looking plots easily.
+```{r}
+
+FigTitle<-"Willingess to Pay to Keep Bald Eagles from extinction"
+
+WTP$year<-as.factor(WTP$year)
+#turn on a package for more theme options
+library(ggthemes)
+```
+
+####First plot
+Let's make a plot that shows us the range of the data by year.
+
+####Second plot
+Now let's make a plot comparing the mean responses between years.
+```{r}
+ggplot(Summary, aes(year, MeanPerYear, fill = year))+
+	geom_bar(stat = "identity")+
+     xlab("Year")+
+     ylab("Mean WTP ($)")+
+     ggtitle(FigTitle)+
+     theme(text = element_text(size = 14))+
+	theme_hc()
+```
+Now save the plot as a .png file
+```{r, results = "hide"}
+ggsave(paste("mean_wtp_2019",".png", sep = ""), device = "png")
+```
+
+
