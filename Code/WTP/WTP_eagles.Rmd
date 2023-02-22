@@ -45,99 +45,57 @@ WTP$year <- as.factor(WTP$year)
 ###Step 3. Summarize the data
 Let's begin by looking at some plots of the data so we can see how people responded.
 
+the first plot will also require a grand mean so let's do a summary
+
 ```{r}
-ggplot(WTP, aes(year, per_year, group = year, color = year))+
-	geom_point()+
-	labs(x = "Year of response", y = "Dollars per year")
+WTP_summary<-WTP %>% group_by(year) %>% summarise(
+  mean_per_year = mean(per_year, na.rm = T),
+  mean_lum_sum = mean(lump_sum, na.rm = T)
+)
 ```
-And now as a boxplot:
+
+
 ```{r}
-FigTitle<-"Willingess to Pay to Keep Bald Eagles from extinction"
 ggplot(WTP, aes(year, per_year, group = year, color = year))+
-	geom_boxplot()+
 	geom_point()+
+  geom_point(aes(year, mean_per_year, group = year, color = year), size = 4, data = WTP_summary)+
 	labs(x = "Year of response", y = "Dollars per year")+
-	ggtitle(FigTitle)
-ggsave("WTP_eagles.png", device = "png")
+  theme(axis.title.x = element_text(size = 14),
+        axis.text.x = element_text(size= 14), 
+        axis.title.y = element_text(size = 14),
+        axis.text.y = element_text(size = 14))
 ```
-Now get some summary stats
+and save
 ```{r}
-Summary<-WTP %>% group_by(year) %>% summarise(
-	N = length(Person),
-	Mean_WTP = mean(per_year, na.rm = T),
-	SD_WTP = sd(per_year, na.rm = T),
-	SEM_WTP = SD_WTP/sqrt(N),
-	MED_WTP = median(per_year, na.rm = T)
-)
+ggsave(here("Code", "WTP", "per_year_mean_w_outlier.png"), width = 6, height = 4, device = "png")
 ```
-And plot
-```{r}
-ggplot(Summary, aes(year, Mean_WTP, color = year))+
-	geom_point(size = 4)+
-	geom_errorbar(aes(ymin = Mean_WTP - SEM_WTP, ymax = Mean_WTP+SEM_WTP), width = 0.2)+
-	geom_point(aes(year, per_year), WTP)
-ggsave(here("Data", "Outputs","Econ","MeanWTP.png"), device = "png")
-```
+So let's get rid of the outlier
 
-
-And now let's do lump sum:
 ```{r}
-FigTitle<-"Willingess to Pay to Keep Bald Eagles from extinction"
-ggplot(WTP, aes(year, lump_sum, group = year, color = year))+
-	geom_boxplot()+
-	geom_point()+
-	labs(x = "Year of response", y = "Dollars in lump sum")+
-	ggtitle(FigTitle)
+WTP <- WTP %>% filter(per_year < 10000)
 ```
-
-Now lets get the summary, by year, for mean willingness to pay in both per year and lump sum amounts.  Pay attention to NAs!
+And plot again:
 ```{r}
-SummaryAll<-WTP %>% group_by(year) %>% summarize (
-	N = length(Person),
-	MeanPerYear= mean(per_year, na.rm = T),
-	sdPerYear = sd(per_year, na.rm = T),
-	MeanLumpSum = mean(lump_sum, na.rm = T),
-	sdLumpSum = sd(lump_sum, na.rm = T)
+
+WTP_summary<-WTP %>% group_by(year) %>% summarise(
+  mean_per_year = mean(per_year, na.rm = T),
+  mean_lum_sum = mean(lump_sum, na.rm = T)
 )
 
-#the na.rm = T statements tell R to go ahead and calculate a mean or SD even if some of the cells in the column are blank (NA)?
-```
-####Optional Step: The resulting dataframe (Summary) is in what R users call "Wide" format, can be harder to plot.  We'll convert it to Long format before plotting it. If you're not sure how, read [this website](http://www.cookbook-r.com/Manipulating_data/Converting_data_between_wide_and_long_format/)
+ggplot(WTP, aes(year, per_year, group = year, color = year))+
+	geom_jitter(width = 0.1, height = 0.1)+
+  geom_point(aes(year, mean_per_year, group = year, color = year), size = 4, data = WTP_summary)+
+	labs(title = "Willingness to pay for Bald eagles", x = "Year of response", y = "Dollars per year")+
+  theme(axis.title.x = element_text(size = 14),
+        axis.text.x = element_text(size= 14), 
+        axis.title.y = element_text(size = 14),
+        axis.text.y = element_text(size = 14))
 
+```
+And save
 ```{r}
-Sum_long<-gather(Summary, value, measurement, MeanPerYear:sdLumpSum)
-```
-That worked!  See the website for details on _why_ it worked.
-
-###Step 4. Visualize the data.
-Now we have everything we need to get an interesting plot of the data.
-Before we continue, lets change year to a factor variable. Let's also turn on a package that helps us get fancier-looking plots easily.
-```{r}
-
-FigTitle<-"Willingess to Pay to Keep Bald Eagles from extinction"
-
-WTP$year<-as.factor(WTP$year)
-#turn on a package for more theme options
-library(ggthemes)
+ggsave(here("Code", "WTP", "per_year_mean_no_outlier.png"),height = 4, width = 6, device = "png")
 ```
 
-####First plot
-Let's make a plot that shows us the range of the data by year.
-
-####Second plot
-Now let's make a plot comparing the mean responses between years.
-```{r}
-ggplot(Summary, aes(year, MeanPerYear, fill = year))+
-	geom_bar(stat = "identity")+
-     xlab("Year")+
-     ylab("Mean WTP ($)")+
-     ggtitle(FigTitle)+
-     theme(text = element_text(size = 14))+
-	theme_hc()
-```
-Now save the plot as a .png file
-```{r, results = "hide"}
-ggsave(paste("mean_wtp_2019",".png", sep = ""), device = "png")
-```
 
 

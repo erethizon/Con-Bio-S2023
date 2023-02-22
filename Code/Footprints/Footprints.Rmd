@@ -1,0 +1,177 @@
+---
+title: "Ecological Footprints"
+output: html_notebook
+---
+
+##Introduction
+In our discussion of ecological economics, we are examining how many earths it takes to sustain the human population.  Students were asked to go to [https://www.footprintcalculator.org/](https://www.footprintcalculator.org/) and calculate their ecological footprint for home and for school.
+
+Here we will make some plots of the data
+
+###Set up the workspace
+```{r}
+rm(list=ls())
+library(tidyverse)
+library(lubridate)
+library(ggthemes)
+library(here)
+```
+###Pull in some data
+```{r}
+Feet<-read.csv(here("Data", "footprints.csv"), stringsAsFactors = T)
+```
+###Clean up the data
+
+```{r}
+Feet$Year<-factor(Feet$Year, levels = c("2018", "2019", "2021", "2022", "2023"))
+Feet$Highest.consumption.category<-as.factor(Feet$Highest.consumption.category)
+
+levels(Feet$Location)
+levels(Feet$Highest.consumption.category)
+fix<-which(Feet$Highest.consumption.category == "Mobilty")
+Feet$Highest.consumption.category[fix]<-"Mobility"
+fix<-which(Feet$Highest.consumption.category == "Shelter ")
+Feet$Highest.consumption.category[fix]<-"Shelter"
+fix<-which(Feet$Highest.consumption.category == "")
+Feet$Highest.consumption.category[fix]<-NA
+Feet$Highest.consumption.category<-factor(Feet$Highest.consumption.category)
+levels(Feet$Highest.consumption.category)
+```
+
+###Make some plots
+
+First look at campus vs home
+```{r}
+ggplot(Feet, aes(Year, Number.of.earths, fill = Location, color = Location))+
+     geom_boxplot(aes(outlier.color = "black", outlier.size = 3), color = "black")+
+	scale_fill_manual(values = c("white", "gray"))+
+	geom_point(aes(group=Location, fill = Location, color = Location),  position=position_dodge(width=0.75), color = "black")+
+	#scale_color_manual(values = c("white", "gray"))+
+	coord_flip()+
+	geom_hline(yintercept = 1, color = "red", size = 1)+
+	labs(x = "Year", y = "Mean number of Earths")+
+	ylim(0,8)+
+	theme_fivethirtyeight()
+	
+
+
+	
+
+```
+Now save
+```{r}
+ggsave (here("Code", "Footprints", "earths_by_year.png"),width = 6, height = 4, device = "png")
+```
+
+
+Now see if we can plot the overshoot dates by year and location
+
+
+Prep the data
+```{r}
+Feet$Overshoot<-as.Date(Feet$Overshoot,"%m/%d/%y" )
+```
+Now see if I can plot julian dates
+
+```{r}
+Feet$Julian<-format(Feet$Overshoot, "%j")
+Feet$Julian<-as.numeric(Feet$Julian)
+```
+
+```{r}
+ggplot(Feet, aes(Julian, color = Year, fill = Year))+
+     geom_histogram()+
+	labs(x = "Julian date", y = "Number of people", title = "Histogram of overshoot dates")+
+	theme_fivethirtyeight()
+ggsave("Overshoot_dates.png", device = "png")
+```
+
+
+Now see if I can summarize and add some means to the plots
+
+```{r}
+NewFeet<-Feet %>% group_by (Year, Place) %>% summarize (
+	MeanE = mean(Earths, na.rm = T),
+	semE = sd(Earths)/sqrt(sum(!is.na(Earths))),
+	meanJul = mean(Julian, na.rm = T),
+	semJul =  sd(Julian)/sqrt(sum(!is.na(Julian)))
+)
+```
+Now plot that
+
+```{r}
+ggplot(NewFeet, aes(Year, MeanE,  fill = Place))+
+	geom_col(position = "dodge", width = 0.8, color = "black")+
+	scale_fill_manual(values= c("white", "gray"))+
+	geom_errorbar(aes(ymin= MeanE - semE,
+				   ymax = MeanE+semE), width = 0.2, position = position_dodge(width = 0.8))+
+	geom_hline(yintercept = 1, color = "red", size = 1)+
+	labs(x = "Year", y = "Mean number of Earths", title = "Mean footprint in number of earths")+
+	coord_flip()+
+	theme_fivethirtyeight()
+```
+Now save
+```{r}
+ggsave("MeanEarthsvsYear.png", device = "png")
+```
+Between 2019 and 2021, the footprint calculator started providing more information, so there is some we can only look at from the 2021 data (and I forgot to ask them to estimate home vs. campus in 2021).
+
+Let's start by renaming some columns
+```{r}
+names(F2021)<- c("Name", "Overshoot", "Earths","Footprint_Ha", "TonsCO2", "Carbon_percent", "Category")
+```
+Now deal with the fact that the category variable came in with mis-labeled factors
+```{r}
+levels(F2021$Category)
+fix<-which(F2021$Category == "mobility"|F2021$Category == "Mobility"|F2021$Category== "Mobilty")
+F2021$Category[fix]<-"Mobility"
+F2021$Category<-factor(F2021$Category)
+levels(F2021$Category)
+```
+Let's get a histogram of main causes of footprint
+
+```{r}
+ggplot(F2021, aes(Category))+
+	geom_histogram(stat = "count")+
+	labs(title = "Histogram of footprint factors", x = "Factor", y = "Number of responses")+
+	theme_fivethirtyeight()
+ggsave("MajorCauses.png", device = "png")
+```
+
+Now I'd like to reshape the DF for plotting purposes so that I have an index for the variables in Earths:Carbon_Percent (the numeric ones). Use tidyr
+
+```{r}
+LF2021<-F2021 %>% pivot_longer(Earths:Carbon_percent, names_to = "Variable")
+```
+Now summarize the data
+```{r}
+LF_summary<-LF2021 %>% group_by(Variable) %>% summarise(
+	avg_val=mean(value, na.rm = T),
+	sd_val = sd(value, na.rm = T)
+)
+```
+Now extract carbon data
+```{r}
+Carbon<-LF2021 %>% filter(Variable == "TonsCO2" | Variable == "Carbon_percent")
+```
+And make Overshoot into a date
+```{r}
+Carbon$Overshoot<-as.character(Carbon$Overshoot)
+Carbon$Overshoot<-dmy(Carbon$Overshoot)
+```
+
+
+Make some plots
+```{r}
+ggplot(F2021, aes(Earths))+
+	geom_histogram()
+```
+
+
+
+
+
+
+
+
+

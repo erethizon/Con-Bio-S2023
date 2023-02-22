@@ -1,0 +1,106 @@
+Name,Year,Location,Earth overshoot date,Number of earths,Ecological footprint (global hectares),Carbon emissions tons per year,Carbon footprint as % of ecological footprint,Highest consumption category
+Erika,2021,Home,25-Jun-2021,2.1,3.5,6.5,63,Mobility
+Alex,2021,Campus,15-Mar-2021,4.9,8.4,13.8,56,Food
+Clara,2021,Campus,25-Jun-2021,2.1,3.5,7,64,Mobility
+Cole,2021,Campus,18-Jul-2021,1.8,3.1,4.9,55,Goods
+Spencer,2021,Campus,15-Mar-2021,4.9,8.3,11.3,47,Food
+Aliya,2021,Campus,19-Mar-2021,4.7,8,13.7,59,Mobility
+Eli ,2021,Campus,17-Apr-2021,3.4,5.8,8.8,52,Food
+Kayla B,2021,Campus,25-May-2021,2.5,4.2,7.2,59,Mobility
+Kayla E,2021,Campus,10-Apr-2021,3.6,6.2,11.6,64,Goods
+Lyndsey,2021,Campus,30-Jun-2021,2,3.4,6.6,66,Mobilty
+Kendrew,2021,Campus,28-Mar-2021,4.2,7.1,11.8,57,Food
+Ryan,2021,Campus,5-May-2021,2.9,5,9.2,64,Mobility
+Anna,2021,Campus,10-Apr-2021,3.6,6.2,12.3,68,Mobility
+Grace ,2021,Campus,19-Mar-2021,4.7,7,11.4,66,Shelter
+Erika,2022,Home,25-Jun-2022,2.1,3.5,6.5,63,Mobility
+Tyler,2022,Home,5-May-2022,3.6,6.2,10.8,61,Shelter
+Tyler,2022,Campus,24-May-2022,2.5,4.1,7.6,58,Shelter
+Dan,2022,Home,23-May-2022,2.5,4.2,7.7,64,Mobility
+Dan,2022,Campus,13-Jun-2022,2.2,3.6,5,47,Food
+Maddy,2022,Home,25-Mar-2022,4.3,7.1,13.3,65,Shelter
+Maddy,2022,Campus,21-Apr-2022,3.3,5.5,9.6,52,Food
+Charlotte,2022,Home,19-Apr-2022,3.3,5.4,8.7,55,Shelter
+Charlotte,2022,Campus,5-Nov-2022,2.8,4.6,7.8,59,Shelter
+Hope,2022,Home,5-Nov-2022,2.8,4.5,8.1,62,Shelter
+Hope,2022,Campus,5-Jul-2022,2.9,4.6,10.3,76,Shelter
+Hannah,2018,Home,27-Jul-2018,1.8,,,,
+Hannah,2018,Campus,5-Jul-2018,2,,,,
+Liz,2018,Home,12-May-2018,2.5,,,,
+Liz,2018,Campus,1-Jul-2018,1.9,,,,
+Jess,2018,Home,22-Apr-2018,3.3,,,,
+Jess,2018,Campus,25-Jun-2018,2.1,,,,
+Amanda,2018,Home,22-Feb-2018,6.9,,,,
+Amanda,2018,Campus,12-Mar-2018,5.1,,,,
+Hattie,2018,Home,21-May-2018,2.6,,,,
+Hattie,2018,Campus,16-Aug-2018,1.6,,,,
+Ella,2018,Home,3-Jul-2018,2,,,,
+Ella,2018,Campus,12-Aug-2018,1.6,,,,
+Maggie,2018,Home,3-Jul-2018,2,,,,
+Maggie,2018,Campus,16-Nov-2018,1.1,,,,
+Anna,2018,Home,8-May-2018,2.9,,,,
+Anna,2018,Campus,9-May-2018,2.8,,,,
+Noah,2018,Home,27-Apr-2018,3.1,,,,
+Noah,2018,Campus,11-Jun-2018,2.3,,,,
+Maeghan,2018,Home,24-Apr-2018,3.2,,,,
+Maegahn,2018,Campus,1-May-2018,3,,,,
+Phoebe,2018,Home,3-May-2018,3,,,,
+Phoebe,2018,Campus,21-Jun-2018,2.1,,,,
+Aidan ,2023,Home,7-Apr-2023,3.7,6.1,10.2,58,Food
+Aidan ,2023,Campus,15-Mar-2023,4.9,8,13.9,59,Food
+Emily,2023,Campus,22-May-2023,2.6,4.2,6.4,52,Goods
+Emily,2023,Home,27-Apr-2023,3.1,5.1,8,54,Food
+Jane,2023,Home,8-Apr-2023,3.7,6,11.6,66,Shelter 
+Jane,2023,Campus,15-Apr-2023,3.5,5.6,10.2,63,Goods
+Peyton,2023,Campus,12-Apr-2023,3.6,5.8,9.8,58,Goods
+Peyton,2023,Home,13-Apr-2023,3.5,5.7,9.6,57,Shelter 
+Julia,2023,Home,6-Apr-2023,3.8,6.2,8.1,46,Food
+Julia,2023,Campus,29-May-2023,2.4,4,5.2,45,Food
+Taylor,2023,Home,14-Feb-2023,8,13,22.9,61,Mobility
+Taylor,2023,Campus,12-Feb-2023,8.4,13.6,24.9,63,Mobility
+Johs,2023,Home,1-May-2023,3,5,7.2,53,Food
+Johs,2023,Campus,29-Apr-2023,3.1,5,7.7,53,Food
+Cassidy,2023,Home,4-Mar-2023,3.9,6.3,8.6,47,Food
+Cassidy,2023,Campus,25-Mar-2023,4.3,7,10.4,51,Food
+Sarah,2023,Campus,15-Mar-2023,4.9,8,12.8,55,Food
+Sarah,2023,Home,27-Apr-2023,3.1,5.1,8.4,57,Mobility
+Drew,2023,Campus,20-Mar-2023,4.6,7.5,13.1,60,Shelter 
+Drew,2023,Home,11-Mar-2023,5.2,8.4,14.8,61,Mobility
+Peter,2023,Campus,4-Apr-2023,3.9,6.3,9.2,50,Food
+Peter,2023,Home,27-Apr-2023,3.1,6.1,8,54,Food
+Thia,2023,Home,5-Jun-2023,2.9,4.7,8.4,61,Food
+Thia,2023,Campus,4-Feb-2023,3.9,6.4,8.3,44,Food
+Willow ,2023,Home,23-Jul-2023,1.8,2.9,4.4,52,Shelter 
+Willow ,2023,Campus,13-Jul-2023,1.9,3.1,4.3,49,Food
+Lydia,2019,Home,23-Apr-2019,3.3,,,,
+Lydia,2019,Campus,24-Mar-2019,4.4,,,,
+Molly,2019,Campus,22-Jun-2019,2.1,,,,
+Molly,2019,Home,17-Jun-2019,2.2,,,,
+Eliza,2019,Campus,24-Jun-2019,2.1,,,,
+Eliza,2019,Home,9-Jun-2019,2.3,,,,
+Julianna,2019,Home,14-Mar-2019,4.9,,,,
+Julianna,2019,Campus,20-Jun-2019,2.1,,,,
+Rachel,2019,Home,4-Apr-2019,3.8,,,,
+Rachel,2019,Campus,9-May-2019,2.8,,,,
+Holly,2019,Home,13-Sep-2019,1.4,,,,
+Holly,2019,Campus,13-Dec-2019,1.1,,,,
+Devin,2019,Campus,29-May-2019,2.4,,,,
+Devin,2019,Home,13-Jun-2019,2.2,,,,
+Laura,2019,Campus,29-Jul-2019,1.7,,,,
+Laura,2019,Home,2-Sep-2019,1.5,,,,
+Abby S,2019,Campus,15-Feb-2019,7.9,,,,
+Abby S,2019,Home,27-Feb-2019,6.4,,,,
+Donovan S,2019,Campus,22-Apr-2019,3.4,,,,
+Donovan S,2019,Home,4-Jun-2019,2.4,,,,
+Nate,2019,Campus,28-Mar-2019,4.2,,,,
+Nate,2019,Home,6-May-2019,2.9,,,,
+Brendan M,2019,Campus,18-Apr-2019,3.4,,,,
+Brendan M,2019,Home,15-Mar-2019,5,,,,
+Heather,2019,Home,28-May-2019,2.5,,,,
+Heather,2019,Campus,26-Jul-2019,1.8,,,,
+Kate,2019,Campus,28-Oct-2019,1.2,,,,
+Kate,2019,Home,15-Jul-2019,1.9,,,,
+Grace,2019,Campus,20-Oct-2019,1.2,,,,
+Grace,2019,Home,7-Jun-2019,2.3,,,,
+Abi,2019,Campus,4-May-2019,2.9,,,,
+Abi,2019,Home,29-Mar-2019,4.2,,,,
