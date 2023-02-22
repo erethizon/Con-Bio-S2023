@@ -1,0 +1,119 @@
+---
+title: "Lorax Diversity"
+output: html_notebook
+---
+
+As you know, there are quite a few species of organism that live in Lorax Land. During your summer internship, you helped conduct biodiversity in 5 sites in Lorax Land. Knowning that you have some experience with R, your supervisor asked you to analyze the data. 
+
+Step 1. Set things up
+
+```{r}
+rm(list = ls())
+library(tidyverse)
+library(here)
+library(vegan)
+library(betapart) 
+library(rstatix)
+
+```
+
+Pull in the data
+```{r}
+DF<-read.csv(here("Exam 1", "lorax-community-comparison.csv"), stringsAsFactors = T)
+```
+
+The first column identifies the site that was surveyed. The remaining 5 columns each represent one of the species in Lorax Land. Numbers in each cell are the number of individuals of that species detected in the survey.
+
+Let's set aside the first column into a new dataframe for later use:
+```{r}
+DivIndices<-DF %>% select(Site)
+```
+And make a dataframe that just has the species:
+```{r}
+LoraxLand<-DF[,2:6]
+```
+
+Now use the `vegan` package to calculate diversity indices.Save the results of each index as a new column in DivIndices
+
+```{r}
+#species richness
+DivIndices$SR<-specnumber(LoraxLand)
+
+#simpson's index
+DivIndices$Simpson<-diversity(LoraxLand, index = "invsimpson")
+
+#shanon index
+DivIndices$Shannon<-diversity(LoraxLand, index = "shannon")
+
+```
+
+Now let's go from wide to long format for DivIndices
+```{r}
+DivLong <- DivIndices %>% pivot_longer(cols = SR:Shannon, values_to = "Value")
+```
+
+
+```{r}
+ggplot(DivLong, aes(Site, Value, group = name, color = name))+
+  geom_point( size = 3)+
+labs(x = "Site in Lorax Land", y = "Index value")+
+  theme(axis.text.x = element_text(size =14),
+        axis.title.x = element_text(size = 14),
+        axis.text.y = element_text(size = 14),
+        axis.title.y = element_text(size = 14))
+```
+Now save the plot
+```{r}
+ggsave(here("Exam 1", "LoraxLandDivIndices.png"), width = 6, height =4 )
+```
+
+
+Now calculate the Jaccard index for all pairs of plots
+```{r}
+#jaccard index
+Jaccard<-betadiver(LoraxLand, "j") #j indicates to use the a/a+b+c formula
+#result is of class 'distance' - convert to a matrix
+Jaccard<-as.matrix(Jaccard)
+```
+Now use `betapart`package to get shared species between sites. The function requires a set of presence/absence rather than abundance data so we have to convert our DF dataset to that.
+```{r}
+#requires a dataset of presence/absence data so make that first
+PresAb<-LoraxLand
+	
+PresAb[][PresAb[] != 0]<- 1 #assigns all values > 0  to 1 
+```
+Now we can run the function to get the number of shared species between each pair of plots.
+
+```{r}
+Beta<-betapart.core(PresAb)#result is a list; we just need one part
+Shared<-Beta$shared
+```
+Now it would be ideal if we could create a matrix with number of shared species ("a") above the diagonal , species richness of each plot along the diagonal, and Jaccard index below the diagonal.
+
+Let's start by adding row and column names to our existing matrices to keep track of things.
+```{r}
+row.names(Jaccard)<-DivIndices$Site
+colnames(Jaccard)<-DivIndices$Site
+
+row.names(Shared)<-DivIndices$Site
+colnames(Shared)<-DivIndices$Site
+```
+Since we want the # of shared species above the diagonal, let's start with the shared matrix. Conveniently, it also has the number of species per plot as its diagonal. 
+
+So all we really need to do is put the Jaccard data below the diagonal.
+
+```{r}
+#using base r
+Shared[lower.tri(Shared)]<-Jaccard[lower.tri(Jaccard, diag = FALSE)]
+#It worked!
+```
+Now write the matrix to a new location
+```{r}
+write.csv(Shared, here("Exam 1", "Lorax_Beta_Diversity.csv"))
+```
+And write the diversity table out as well.
+```{r}
+
+write.csv(DivIndices, here("Exam 1", "Lorax_Alpha_Diversity.csv"))
+```
+
