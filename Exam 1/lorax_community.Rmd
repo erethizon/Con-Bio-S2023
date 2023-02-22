@@ -111,9 +111,3 @@ Now write the matrix to a new location
 ```{r}
 write.csv(Shared, here("Exam 1", "Lorax_Beta_Diversity.csv"))
 ```
-And write the diversity table out as well.
-```{r}
-
-write.csv(DivIndices, here("Exam 1", "Lorax_Alpha_Diversity.csv"))
-```
-
