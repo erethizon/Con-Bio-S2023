@@ -1,0 +1,42 @@
+---
+title: "Habitat fragmentation"
+output: html_notebook
+---
+Set things up
+
+```{r}
+rm(list = ls())
+library(tidyverse)
+library(fdrtool)
+library(here)
+```
+
+Let's create a dataset
+
+```{r}
+percent_destroyed<- c(0:99)
+num_fragments <- dnorm(percent_destroyed, 50, 20)
+num_patches<-dnorm(percent_destroyed, 0, 18)
+df<-as.data.frame(cbind(percent_destroyed, num_fragments, num_patches))
+```
+Now plot
+```{r}
+ggplot(df)+
+  geom_line(aes(percent_destroyed, num_fragments), color = "gray", linetype = "dashed", size = 2)+
+  geom_text(label = "Mean fragment size", x = 28, y = 0.021,  color = "red", size = 5)+
+  geom_line(aes(percent_destroyed, num_patches), color = "red",size = 2 )+
+  labs(x = "Percent community type destroyed", y = "Num or size of patches")+
+  geom_text(label = "Number of fragments", x = 85, y = 0.015, color = "gray", size = 5)+
+  theme(
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    text = element_text(size = 14),
+    axis.text = element_text(size = 12, color = "black")
+  )
+
+```
+Now save
+```{r}
+ggsave("landscape_configuration.png", width = 6, height = 4)
+```
+
